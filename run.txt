@@ -1,0 +1,29 @@
+=== How to run CodeWar ===
+
+1. Ensure Prerequisites are met:
+   - Docker Desktop is installed and RUNNING.
+   - You have `HF_TOKEN` set correctly in the `.env` file (`d:\JEO\Code War\.env`).
+
+2. Start the Backend Server:
+   - Open a standard PowerShell or Command Prompt.
+   - Change directory to the root CodeWar folder:
+     cd "d:\JEO\Code War"
+   - Run the uvicorn server via your virtual environment:
+     .\venv\Scripts\python.exe -m uvicorn app:app --reload --port 8000
+   
+   (The backend will live at http://localhost:8000)
+
+3. Start the Frontend Application:
+   - Open a NEW PowerShell or Command Prompt.
+   - Change directory to the frontend folder:
+     cd "d:\JEO\Code War\frontend"
+   - Run the development server:
+     npm run dev
+   
+   (The frontend will live at http://localhost:5173)
+
+4. Open your browser and go to http://localhost:5173
+   - Admin panel is accessible from the frontend directly if logged in as admin.
+   - Default admin credentials (created automatically on first launch):
+     Username: admin
+     Password: admin123

@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlalchemy
+python-jose[cryptography]
+passlib[bcrypt]
+huggingface_hub
+python-dotenv
+sse-starlette
+requests

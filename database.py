@@ -1,15 +1,21 @@
 """
 database.py — SQLAlchemy models and DB session for CodeWar contest platform.
 """
+import os
 from datetime import datetime
 from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, Float, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 import enum
 
-DATABASE_URL = "sqlite:///./codewar.db"
+# Support both SQLite (local) and PostgreSQL (Render)
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./codewar.db")
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Render's PostgreSQL connection string uses postgres:// but SQLAlchemy 2.0+ requires postgresql://
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 Base = declarative_base()
 
 

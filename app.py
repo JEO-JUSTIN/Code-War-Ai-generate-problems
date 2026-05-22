@@ -4,6 +4,7 @@ app.py — FastAPI entry point for CodeWar contest platform.
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 
 from database import init_db
@@ -27,6 +28,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── Serve frontend static files ────────────────────────────────────────────────
+frontend_dist = os.path.join(os.path.dirname(__file__), "frontend", "dist")
+if os.path.exists(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
 
 # ── Startup ────────────────────────────────────────────────────────────────────
 @app.on_event("startup")

@@ -2,7 +2,6 @@ services:
   - type: web
     name: codewar-backend
     runtime: python
-    pythonVersion: 3.11
     buildCommand: |
       pip install -r requirements.txt && \
       cd frontend && \
@@ -18,10 +17,6 @@ services:
         value: "true"
       - key: VITE_API_URL
         value: https://$RENDER_EXTERNAL_HOSTNAME
-    databases:
-      - name: codewar-db
-        databaseName: codewar
-        user: codewar_user
 
 databases:
   - name: codewar-db

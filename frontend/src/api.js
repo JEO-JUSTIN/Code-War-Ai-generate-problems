@@ -1,5 +1,13 @@
 // api.js — Centralized API client for CodeWar
-const BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// Determine API base URL: use env var if available, otherwise use current host
+const getBaseURL = () => {
+    if (import.meta.env.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL
+    }
+    // Auto-detect from current location (works in production)
+    return window.location.origin
+}
+const BASE = getBaseURL()
 
 function getToken() {
     return localStorage.getItem('cw_token')
@@ -27,7 +35,11 @@ async function req(method, path, body, auth = true) {
 export const apiRegister = (d) => req('POST', '/auth/register', d, false)
 export const apiLogin = async (username, password) => {
     const fd = new URLSearchParams({ username, password })
-    const res = await fetch(BASE + '/auth/login', { method: 'POST', body: fd })
+    const res = await fetch(BASE + '/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: fd
+    })
     if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Login failed') }
     return res.json()
 }
